@@ -6,7 +6,6 @@ WORKDIR /app
 
 COPY requiriments.txt .
 
-RUN python -m pip install --upgrade pip
 RUN pip install -r requiriments.txt
 
 COPY app.py .

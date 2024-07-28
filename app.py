@@ -1,6 +1,9 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
+from validate_docbr import CPF
+
+cpf = CPF()
 
 app = Flask(__name__)
 
@@ -35,7 +38,11 @@ class User(Resource):
         return {'message': 'user 1'}
     def post(self):
         data = _user_parser.parse_args()
-        UserModel(**data).save()
+        if not cpf.validate(data["cpf"]):
+            return {"message": "CPF is invalid!"}
+
+        response = UserModel(**data).save()
+        return {"message": "User insert sucsess"}
     
 class Users(Resource):
     def get(self):
